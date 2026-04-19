@@ -5,7 +5,7 @@ import { Mail, Pencil, Phone, Trash } from "lucide-react";
 
 const columnHelper = createColumnHelper();
 
-const columns = (onEdit, onDelete) => [
+const columns = () => [
   columnHelper.accessor(row => `${row.firstName ?? ""} ${row.lastName ?? ""}`.trim(), {
     id: "profile",
     meta: { label: "Name" },

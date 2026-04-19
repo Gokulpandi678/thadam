@@ -17,14 +17,12 @@ const CustomerTable = ({ onEdit, onDelete }) => {
 
   const { table } = useCustomerTable(customers);
 
-  // Ref for the scrollable container — passed as `root` to the observer
   const scrollContainerRef = useRef(null);
 
-  // Sentinel div placed AFTER the table inside the scroll container
   const sentinelRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: !!hasNextPage && !isFetchingNextPage,
-    root: scrollContainerRef,   // ← observe within the scrollable div, not viewport
+    root: scrollContainerRef,
   });
 
   const visibleColumns = table?.getVisibleLeafColumns() || [];
@@ -44,7 +42,6 @@ const CustomerTable = ({ onEdit, onDelete }) => {
     <div className="flex flex-col gap-4">
       <CustomerToolbar table={table} />
 
-      {/* scroll container — sentinel lives inside here, after the table */}
       <div
         ref={scrollContainerRef}
         className="overflow-auto shadow-md rounded-xl max-h-[calc(100vh-170px)]"
@@ -118,14 +115,10 @@ const CustomerTable = ({ onEdit, onDelete }) => {
             )}
           </tbody>
         </table>
-
-        {/* Sentinel: a plain div OUTSIDE the <table>, inside the scroll container.
-            Must have some height so IntersectionObserver can detect it entering view. */}
         <div ref={sentinelRef} className="h-4 w-full" />
-
-        {isFetchingNextPage && (
-          <div className="flex items-center justify-center gap-2 py-4 text-sm text-gray-400">
-            <Loader2 className="animate-spin" size={16} /> Loading more...
+          {isFetchingNextPage && (
+            <div className="flex items-center justify-center gap-2 py-4 text-sm text-gray-400">
+              <Loader2 className="animate-spin" size={16} /> Loading more...
           </div>
         )}
       </div>

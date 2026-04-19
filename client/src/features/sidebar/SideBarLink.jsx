@@ -9,7 +9,7 @@ const SideBarLink = ({ name, path, icon: Icon, onClick }) => {
     return (
       <button
         onClick={onClick}
-        className={clsx(baseClass, "text-gray-400 hover:text-red-500 w-full")}
+        className={clsx(baseClass, "text-gray-400 hover:text-red-500 w-full cursor-pointer")}
       >
         <Icon size={18} />
         <span className="font-medium py-1">{name}</span>
