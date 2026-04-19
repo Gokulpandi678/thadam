@@ -23,7 +23,7 @@ import response.PrepareResponse;
 import response.RecentContactDTO;
 
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequiredArgsConstructor
 public class DashboardService {
 	
 	private final CustomerRepository customerRepository;

@@ -22,7 +22,7 @@ import service.AuthService;
 
 @Path("/api/v1/auth")
 @Produces(MediaType.APPLICATION_JSON)
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequiredArgsConstructor
 public class AuthController {
 
     private static final String ACCESS_TOKEN_COOKIE = "access_token";

@@ -30,7 +30,7 @@ import service.CustomerService;
 @Path("/api/v1/customers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;

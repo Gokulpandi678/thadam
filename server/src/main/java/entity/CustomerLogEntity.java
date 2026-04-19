@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "thadam", name = "customer_logs")
+@Table(schema = "thadam", name = "customer_meet_logs")
 public class CustomerLogEntity {
 
     @Id

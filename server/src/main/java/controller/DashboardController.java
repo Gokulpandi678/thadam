@@ -17,7 +17,7 @@ import service.DashboardService;
 @Path("/api/v1/dashboard")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequiredArgsConstructor
 public class DashboardController {
     private final RequestContext requestContext;
     private final DashboardService dashboardService;

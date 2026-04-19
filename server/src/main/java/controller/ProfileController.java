@@ -14,7 +14,7 @@ import service.ProfileService;
 @Path("/api/v1/profile")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
