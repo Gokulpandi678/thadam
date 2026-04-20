@@ -1,19 +1,6 @@
 import { useRef, useState } from "react";
 import { Pencil, Trash2, X, ZoomIn } from "lucide-react";
 
-/**
- * Avatar
- *
- * Base props (always used):
- *  - src       : image URL
- *  - initials  : fallback text when no src
- *  - size      : number (default 72)
- *
- * Optional interactive props (used on the Details page):
- *  - editable        : boolean — show pencil + delete controls
- *  - onEditPic       : (file: File) => void — called after user picks a new image
- *  - onDeletePic     : () => void — called when user confirms delete
- */
 const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDeletePic }) => {
     const fileInputRef = useRef(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -22,15 +9,12 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
         const selected = e.target.files[0];
         if (!selected) return;
         onEditPic?.(selected);
-        // Reset so the same file can be re-selected if needed
         e.target.value = "";
     };
 
     return (
         <>
-            {/* ── Avatar + controls ── */}
             <div className="relative inline-flex shrink-0" style={{ width: size, height: size }}>
-                {/* Main circle */}
                 <div
                     style={{ width: size, height: size }}
                     className={`
@@ -50,7 +34,6 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                         </span>
                     )}
 
-                    {/* Hover overlay hint when editable and has image */}
                     {src && editable && (
                         <div className="absolute inset-0 rounded-full bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                             <ZoomIn size={size * 0.3} className="text-white drop-shadow" />
@@ -58,7 +41,6 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                     )}
                 </div>
 
-                {/* Pencil button — bottom-right corner */}
                 {editable && (
                     <button
                         type="button"
@@ -80,7 +62,6 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                     </button>
                 )}
 
-                {/* Delete button — bottom-left corner (only when there's an image) */}
                 {editable && src && (
                     <button
                         type="button"
@@ -102,7 +83,6 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                     </button>
                 )}
 
-                {/* Hidden file input */}
                 {editable && (
                     <input
                         ref={fileInputRef}
@@ -114,10 +94,9 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                 )}
             </div>
 
-            {/* ── Lightbox ── */}
             {lightboxOpen && src && (
                 <div
-                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+                    className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 backdrop-blur-sm"
                     onClick={() => setLightboxOpen(false)}
                 >
                     <div
