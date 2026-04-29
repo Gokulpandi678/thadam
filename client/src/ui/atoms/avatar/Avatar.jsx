@@ -29,7 +29,10 @@ const Avatar = ({ src, initials, size = 72, editable = false, onEditPic, onDelet
                     {src ? (
                         <img src={src} alt="profile" className="w-full h-full object-cover" />
                     ) : (
-                        <span className="font-bold text-white tracking-tight text-3xl">
+                        <span
+                            className="font-bold text-white tracking-tight"
+                            style={{ fontSize: size * 0.35 }}
+                        >
                             {initials}
                         </span>
                     )}

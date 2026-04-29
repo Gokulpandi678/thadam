@@ -192,3 +192,56 @@ export const useDeleteProfilePic = () => {
         }
     });
 };
+
+export const useGetDeletedCustomers = () => {
+    return useQuery({
+        queryKey: ['deletedCustomers'],
+        queryFn: () => customerApi.getDeletedCustomers(),
+        staleTime: 2 * 60 * 1000,
+        retry: 1,
+    });
+};
+
+export const useRestoreCustomer = () => {
+    return useMutation({
+        mutationFn: async ({ id }) => {
+            await delay();
+            return customerApi.restoreCustomer(id);
+        },
+        onMutate: () => {
+            const toastId = toast.loading("Restoring contact...");
+            return { toastId };
+        },
+        onSuccess: (data, variables, context) => {
+            toast.success("Contact restored successfully", { id: context.toastId });
+            queryClient.invalidateQueries({ queryKey: ['deletedCustomers'] });
+            queryClient.invalidateQueries({ queryKey: ['allCustomer'] });
+            queryClient.invalidateQueries({ queryKey: ['customerFilterOptions'] });
+        },
+        onError: (error, variables, context) => {
+            toast.error("Failed to restore contact", { id: context.toastId });
+            console.error("Failed to restore contact:", error);
+        }
+    });
+};
+
+export const usePermanentlyDeleteCustomer = () => {
+    return useMutation({
+        mutationFn: async ({ id }) => {
+            await delay();
+            return customerApi.permanentlyDeleteCustomer(id);
+        },
+        onMutate: () => {
+            const toastId = toast.loading("Permanently deleting contact...");
+            return { toastId };
+        },
+        onSuccess: (data, variables, context) => {
+            toast.success("Contact permanently deleted", { id: context.toastId });
+            queryClient.invalidateQueries({ queryKey: ['deletedCustomers'] });
+        },
+        onError: (error, variables, context) => {
+            toast.error("Failed to permanently delete contact", { id: context.toastId });
+            console.error("Failed to permanently delete contact:", error);
+        }
+    });
+};

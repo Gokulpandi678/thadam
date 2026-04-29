@@ -52,4 +52,13 @@ export const customerApi = {
 
     deleteProfilePic: (id) =>
         apiClient.delete(`/customers/${id}/deleteProfilePic`),
+
+    getDeletedCustomers: () =>
+        apiClient.get("/customers/recycle-bin"),
+
+    restoreCustomer: (id) =>
+        apiClient.put(`/customers/recycle-bin/${id}/restore`),
+
+    permanentlyDeleteCustomer: (id) =>
+        apiClient.delete(`/customers/recycle-bin/${id}/permanent`),
 };

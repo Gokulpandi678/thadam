@@ -2,7 +2,9 @@ package mapper;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import entity.ClientEntity;
 import entity.CustomerEntity;
 import request.CustomerRequest;
 import response.CustomerLogResponse;
@@ -50,13 +52,13 @@ public final class CustomerMapper {
 	 * Used by getCustomers (list) — no logs loaded.
 	 */
 	public static CustomerResponse toResponse(CustomerEntity e) {
-		return toResponse(e, Collections.emptyList());
+		return toResponse(e, Collections.emptyList(), null);
 	}
 
 	/**
 	 * Used by getCustomer (single) — logs included.
 	 */
-	public static CustomerResponse toResponse(CustomerEntity e, List<CustomerLogResponse> logs) {
+	public static CustomerResponse toResponse(CustomerEntity e, List<CustomerLogResponse> logs, Optional<ClientEntity> cl) {
 		return CustomerResponse.builder().id(e.getId())
 				// Personal Info
 				.firstName(e.getFirstName()).lastName(e.getLastName()).profilePicture(e.getProfilePicture())
@@ -76,6 +78,7 @@ public final class CustomerMapper {
 				.lastContactedDate(e.getLastContactedDate()).referredBy(e.getReferredBy())
 				// Logs
 				.logs(logs)
+				.client(cl)
 				// Timestamps
 				.createdAt(e.getCreatedAt()).updatedAt(e.getUpdatedAt()).build();
 	}

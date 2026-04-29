@@ -3,8 +3,10 @@ package response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import entity.ClientEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -49,6 +51,9 @@ public class CustomerResponse {
 
     // ── Logs ──────────────────────────────────────────────────
     private List<CustomerLogResponse> logs;
+    
+    // client details
+    private Optional<ClientEntity> client;
 
     // ── Timestamps ────────────────────────────────────────────
     private LocalDateTime createdAt;

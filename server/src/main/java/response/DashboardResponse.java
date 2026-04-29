@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class DashboardResponse {
-    private Map<String, Long>        stats;
+    private Map<String, StatDelta>        stats;
     private List<RecentContactDTO>   recentContacts;
     private List<EngagedContactDTO>  mostEngaged;
     private Map<String, Object>      distributions;

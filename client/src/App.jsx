@@ -5,6 +5,7 @@ import ErrorBoundary from './ui/ErrorBoundary'
 import { CustomerContextProvider } from './context/CustomerContext'
 import {Toaster} from 'react-hot-toast'
 import QueryProvider from "./service/QueryProvider"
+import { ClientContextProvider } from './context/ClientContext'
 
 function App() {
 
@@ -14,7 +15,9 @@ function App() {
         <Toaster position='top-center' reverseOrder={false}/>
         <QueryProvider>
           <CustomerContextProvider>
-            <AppRoutes />
+            <ClientContextProvider>
+              <AppRoutes />
+            </ClientContextProvider>
           </CustomerContextProvider>
         </QueryProvider>
       </ErrorBoundary>

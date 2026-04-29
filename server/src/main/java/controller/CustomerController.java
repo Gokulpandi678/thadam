@@ -129,4 +129,22 @@ public class CustomerController {
     public RestResponse<GenericResponse> deleteProfilePic(@PathParam("id") UUID id) {
         return customerService.deleteProfilePic(id, requestContext.getUserId());
     }
+    
+    @GET
+    @Path("/recycle-bin")
+    public RestResponse<GenericResponse> getDeletedCustomers() {
+        return customerService.getDeletedCustomers(requestContext.getUserId());
+    }
+
+    @PUT
+    @Path("/recycle-bin/{id}/restore")
+    public RestResponse<GenericResponse> restoreCustomer(@PathParam("id") UUID id) {
+        return customerService.restoreCustomer(id, requestContext.getUserId());
+    }
+
+    @DELETE
+    @Path("/recycle-bin/{id}/permanent")
+    public RestResponse<GenericResponse> permanentlyDeleteCustomer(@PathParam("id") UUID id) {
+        return customerService.permanentlyDeleteCustomer(id, requestContext.getUserId());
+    }
 }

@@ -1,5 +1,7 @@
 package repositories;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,5 +201,44 @@ public class CustomerRepository implements PanacheRepositoryBase<CustomerEntity,
             query.append(" and ").append(field).append(" in :").append(paramKey);
             params.put(paramKey, values);
         }
+    }
+    
+ // CustomerRepository.java
+
+    public long countNewThisMonth(String ownerId) {
+        YearMonth current = YearMonth.now();
+        LocalDateTime start = current.atDay(1).atStartOfDay();
+        LocalDateTime end   = LocalDateTime.now();
+        // Use Panache's count() with positional params — no getEntityManager needed
+        return count("ownerId = ?1 and isDeleted = false and createdAt >= ?2 and createdAt <= ?3",
+                     ownerId, start, end);
+    }
+
+    public long countNewLastMonth(String ownerId) {
+        YearMonth last = YearMonth.now().minusMonths(1);
+        LocalDateTime start = last.atDay(1).atStartOfDay();
+        LocalDateTime end   = last.atEndOfMonth().atTime(23, 59, 59);
+        return count("ownerId = ?1 and isDeleted = false and createdAt >= ?2 and createdAt <= ?3",
+                     ownerId, start, end);
+    }
+    
+    public long countDistinctCompaniesBefore(String ownerId, LocalDateTime before) {
+        return getEntityManager()
+            .createQuery(
+                "select count(distinct e.company) from CustomerEntity e " +
+                "where e.ownerId = :ownerId and e.isDeleted = false " +
+                "and e.company is not null and e.createdAt < :before",
+                Long.class)
+            .setParameter("ownerId", ownerId)
+            .setParameter("before", before)
+            .getSingleResult();
+    }
+    
+    public List<CustomerEntity> findDeletedByOwner(String ownerId) {
+        return list("ownerId = ?1 and isDeleted = true", ownerId);
+    }
+
+    public Optional<CustomerEntity> findDeletedByIdAndOwner(UUID id, String ownerId) {
+        return find("id = ?1 and ownerId = ?2 and isDeleted = true", id, ownerId).firstResultOptional();
     }
 }

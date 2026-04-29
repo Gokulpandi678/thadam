@@ -1,24 +1,22 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { Columns3Cog, Filter, Plus, Search, X, Check, ChevronDown } from 'lucide-react';
+import { Columns3Cog, Filter, Plus, Search, X } from 'lucide-react';
 import { IconButton, TextButton } from "../../../../ui/atoms/button/Button";
 import InputBox from '../../../../ui/atoms/input/InputBox';
-import { useNavigate } from "react-router-dom";
 import { CustomerContext } from "../../../../context/CustomerContext";
 import FilterDropdown from "./FilterDropdown";
 
 const FILTER_FIELDS = [
-  { key: "role", label: "Role" },
+  { key: "role",        label: "Role" },
   { key: "designation", label: "Designation" },
-  { key: "city", label: "City" },
+  { key: "city",        label: "City" },
 ];
 
-const CustomerToolbar = ({ table }) => {
+const CustomerToolbar = ({ table, length, onAddClick }) => {
   const [showColumnMenu, setShowColumnMenu] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   const columnMenuRef = useRef(null);
   const filterMenuRef = useRef(null);
-  const navigate = useNavigate();
 
   const {
     search, setSearch,
@@ -54,7 +52,6 @@ const CustomerToolbar = ({ table }) => {
           type="search"
         />
 
-
         <div className="relative" ref={filterMenuRef}>
           <IconButton
             icon={<Filter />}
@@ -83,7 +80,6 @@ const CustomerToolbar = ({ table }) => {
                   </button>
                 )}
               </div>
-
               <div className="space-y-3">
                 {FILTER_FIELDS.map(({ key, label }) => (
                   <div key={key}>
@@ -155,15 +151,13 @@ const CustomerToolbar = ({ table }) => {
             )}
           </div>
         )}
-
       </div>
-      <div>
-        <TextButton icon={<Plus />} onClick={() => navigate("/contact-form")}>
+
+      <div className="flex gap-5 items-center">
+        <span>Showing customers: {length}</span>
+        <TextButton icon={<Plus />} onClick={onAddClick}>
           Add Contact
         </TextButton>
-        {/* <IconButton icon={<Plus />} onClick={() => navigate("/contact-form")}>
-          Add Contact
-        </IconButton> */}
       </div>
     </div>
   );

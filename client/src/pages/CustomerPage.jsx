@@ -5,9 +5,12 @@ import EditCustomerSidebar from "../features/customer/layout/EditCustomerSidebar
 import { CustomerContext } from "../context/CustomerContext";
 import ConfirmationModal from "../features/actions/ConfirmationModal";
 import { TriangleAlert } from "lucide-react";
+import { getFullName } from "../utils/customer.utils";
+import AddContactDrawer from "../features/customer/component/form/AddContactDrawer";
 
 const CustomerPage = () => {
-    const { customers, deleteCustomer, isDeleting } = useContext(CustomerContext);
+    const [addOpen, setAddOpen] = useState(false);  
+    const { deleteCustomer, isDeleting } = useContext(CustomerContext);
 
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -32,19 +35,21 @@ const CustomerPage = () => {
         setCustomerToDelete(false)
     };
 
-    console.log(customerToDelete)
-
     return (
         <div>
+            <AddContactDrawer
+                isOpen={addOpen}
+                onClose={() => setAddOpen(false)}
+            />
             <Header
-                title="Customer"
-                description="Manage your customer. Log meetings."
+                title="Contacts"
+                description="Manage your contacts. Log meetings."
             />
 
             <CustomerTable
-                customers={customers}
                 onEdit={handleEdit}
                 onDelete={handleDeleteRequest}
+                onAddClick={() => setAddOpen(true)}
             />
 
             <EditCustomerSidebar
@@ -56,7 +61,7 @@ const CustomerPage = () => {
             <ConfirmationModal
                 isOpen={customerToDelete}
                 title="Delete customer"
-                message={`"${customerToDelete?.firstName} ${customerToDelete?.lastName}" will be moved to the temporary delete bin and permanently deleted after 30 days.`}
+                message={`"${getFullName(customerToDelete)}" will be moved to the temporary delete bin and permanently deleted after 30 days.`}
                 confirmLabel="Delete"
                 onConfirm={handleDeleteConfirm}
                 onCancel={() => setCustomerToDelete(null)}
