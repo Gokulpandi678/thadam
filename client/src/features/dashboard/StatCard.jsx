@@ -1,33 +1,55 @@
 import React from "react";
-import { Users, Building2, Calendar, Activity } from "lucide-react";
+import { Users, Building2, Calendar, Activity, TrendingUp, TrendingDown, Minus } from "lucide-react";
 
+// ── Trend badge ───────────────────────────────────────────────────────────────
+const TrendBadge = ({ trend, percent }) => {
+  if (trend === "same" || percent == null) {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+        <Minus size={11} /> same
+      </span>
+    );
+  }
+
+  const isUp = trend === "up";
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+        ${isUp ? "text-green-600 bg-green-100" : "text-red-500 bg-red-100"}`}
+    >
+      {isUp ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
+      {isUp ? "+" : "-"}{percent}%
+    </span>
+  );
+};
+
+// ── Main component ────────────────────────────────────────────────────────────
 const StatCard = ({ stats }) => {
-
   const statsData = [
     {
       title: "Contacts",
-      value: stats.totalContacts,
+      stat: stats.totalContacts,
       icon: <Users size={20} />,
       iconBg: "bg-blue-100 text-blue-600",
-      description: "total contacts"
+      description: "vs last month"
     },
     {
       title: "Companies",
-      value: stats.differentCompanies,
+      stat: stats.differentCompanies,
       icon: <Building2 size={20} />,
       iconBg: "bg-purple-100 text-purple-600",
       description: "different companies"
     },
     {
       title: "Meetings this month",
-      value: stats.meetingsThisMonth,
+      stat: stats.meetingsThisMonth,
       icon: <Calendar size={20} />,
       iconBg: "bg-green-100 text-green-600",
-      description: "this month"
+      description: "vs last month"
     },
     {
       title: "Total meetings",
-      value: stats.totalLogs,
+      stat: stats.totalLogs,
       icon: <Activity size={20} />,
       iconBg: "bg-orange-100 text-orange-600",
       description: "all time"
@@ -35,27 +57,30 @@ const StatCard = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-      {statsData.map((stat, i) => {
-        return (
-          <div
-            key={i}
-            className="flex justify-between items-center p-5 rounded-2xl shadow-lg hover:scale-[1.02] transition bg-white"
-          >
-            <div>
-              <div className={`w-11 h-11 flex items-center justify-center rounded-lg ${stat.iconBg}`}>
-                {stat.icon}
-              </div>
-              <p className="text-gray-500 font-semibold mt-4">{stat.title}</p>
-            </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {statsData.map((item, i) => {
+    const { stat, title, icon } = item;
+    const { value = 0, percent = null, trend = "same" } = stat ?? {};
 
-            <h2 className="text-4xl font-semibold mt-1">
-              {stat.value?.toLocaleString() || 0}
-            </h2>
-          </div>
-        );
-      })}
-    </div>
+    return (
+      <div
+        key={i}
+        className="flex items-center gap-4 bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition"
+      >
+        <div className="p-3 rounded-lg bg-blue-100 text-blue-600">
+          {icon}
+        </div>
+
+        <div className="flex flex-col flex-1">
+          <p className="text-sm text-gray-500">{title}</p>
+          <h2 className="text-2xl font-bold">{value.toLocaleString()}</h2>
+        </div>
+
+        <TrendBadge trend={trend} percent={percent} />
+      </div>
+    );
+  })}
+</div>
   );
 };
 

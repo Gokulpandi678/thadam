@@ -9,13 +9,14 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import com.workos.WorkOS;
 import com.workos.usermanagement.types.UserManagementProviderEnumType;
 
+import config.SystemProperties;
 import config.WorkosProperties;
 import entity.UserEntity;
 import io.quarkus.logging.Log;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
 import repositories.UserRepository;
 import response.AuthResponse;
 import response.GenericResponse;
@@ -23,112 +24,120 @@ import restservice.WorkosClient;
 import utility.AuthConstants;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Inject
-    WorkosProperties props;
+	private final WorkosProperties props;
 
-    @Inject
-    @RestClient
-    WorkosClient workosClient;
+	@RestClient
+	WorkosClient workosClient;
 
-    @Inject
-    UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    private WorkOS workos;
+	private WorkOS workos;
 
-    @PostConstruct
-    void init() {
-        this.workos = new WorkOS(props.getWorkosApiKey());
-    }
+	private final SystemProperties sysProps;
 
-    /**
-     * Builds a JAX-RS redirect Response pointing to the WorkOS authorization URL.
-     * Returns an error redirect if URL generation fails.
-     */
-    public Response buildAuthorizationRedirect(String clientType) {
-        try {
-            String url = workos.userManagement
-                    .getAuthorizationUrl(
-                            props.getWorkosClientId(),
-                            "http://localhost:5000/api/v1/auth/callback")
-                    .provider(UserManagementProviderEnumType.AuthKit)
-                    .state(clientType)
-                    .build();
-            return Response.seeOther(URI.create(url)).build();
-        } catch (Exception e) {
-            Log.error("Failed to build authorization URL", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildErrorResponse("Failed to build authorization URL"))
-                    .build();
-        }
-    }
+	@PostConstruct
+	void init() {
+		this.workos = new WorkOS(props.getWorkosApiKey());
+	}
 
-    /**
-     * Exchanges the OAuth authorization code for an access token,
-     * upserts the user in the database, and returns the raw access token string.
-     * Returns null if authentication fails (caller handles error response).
-     */
-    public String authenticateWithCode(String code) {
-        try {
-            Map<String, String> authRequest = new HashMap<>();
-            authRequest.put("client_id", props.getWorkosClientId());
-            authRequest.put("client_secret", props.getWorkosApiKey());
-            authRequest.put("code", code);
-            authRequest.put("grant_type", "authorization_code");
-            authRequest.put("redirect_uri", "http://localhost:5000/api/v1/auth/callback");
+	public Response buildAuthorizationRedirect(String clientType) {
 
-            AuthResponse oauthUser = workosClient.authenticateWithCode(authRequest);
+		try {
 
-            UserEntity user = UserEntity.builder()
-                    .userId(oauthUser.getUser().getId())
-                    .email(oauthUser.getUser().getEmail())
-                    .firstName(oauthUser.getUser().getFirstName())
-                    .lastName(oauthUser.getUser().getLastName())
-                    .emailVerified(oauthUser.getUser().isEmailVerified())
-                    .profilePicture(oauthUser.getUser().getProfilePicture())
-                    .build();
+			String url = workos.userManagement.getAuthorizationUrl(props.getWorkosClientId(), sysProps.getLoginRedirectUrl())
+					.provider(UserManagementProviderEnumType.AuthKit).state(clientType).build();
 
-            userRepository.upsertUser(user);
+			return Response.seeOther(URI.create(url)).build();
 
-            return oauthUser.getAccessToken();
+		} catch (Exception e) {
+			Log.error("Failed to build authorization URL", e);
 
-        } catch (Exception e) {
-            Log.errorf("Authentication failed: %s", e.getMessage());
-            return null;
-        }
-    }
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(buildErrorResponse("Failed to build authorization URL")).build();
+		}
+	}
 
-    /**
-     * Builds the WorkOS logout URL to terminate the session on the identity provider side
-     * @param sessionId The session ID extracted from the access token
-     * @return The complete WorkOS logout URL
-     */
-    public String buildLogoutUrl(String sessionId) {
-        try {
-            // Using WorkOS Java SDK to build logout URL
-            String logoutUrl = workos.userManagement.getLogoutUrl(sessionId);
-            return logoutUrl;
-        } catch (Exception e) {
-            Log.errorf("Failed to build logout URL: %s", e.getMessage());
-            // Fallback: manual URL construction
-            String returnToUrl = "http://localhost:5173/"; // Your frontend URL after logout
-            return String.format(
-                "https://api.workos.com/user_management/sessions/%s/logout?client_id=%s&return_to=%s",
-                sessionId, 
-                props.getWorkosClientId(), 
-                returnToUrl
-            );
-        }
-    }
-    
-    /**
-     * Builds a structured GenericResponse for error cases in the callback flow.
-     */
-    public GenericResponse buildErrorResponse(String message) {
-        GenericResponse response = new GenericResponse();
-        response.setStatus(AuthConstants.NOT_OK);
-        response.setMessage(message);
-        return response;
-    }
+	public AuthResponse authenticateWithCode(String code) {
+
+		try {
+
+			Map<String, String> authRequest = new HashMap<>();
+			authRequest.put("client_id", props.getWorkosClientId());
+			authRequest.put("client_secret", props.getWorkosApiKey());
+			authRequest.put("code", code);
+			authRequest.put("grant_type", "authorization_code");
+			authRequest.put("redirect_uri", sysProps.getLoginRedirectUrl());
+
+			AuthResponse oauthUser = workosClient.authenticateWithCode(authRequest);
+
+			UserEntity user = UserEntity.builder().userId(oauthUser.getUser().getId())
+					.email(oauthUser.getUser().getEmail()).firstName(oauthUser.getUser().getFirstName())
+					.lastName(oauthUser.getUser().getLastName()).emailVerified(oauthUser.getUser().isEmailVerified())
+					.profilePicture(oauthUser.getUser().getProfilePicture()).build();
+
+			userRepository.upsertUser(user);
+
+			return oauthUser;
+
+		} catch (Exception e) {
+			Log.errorf("Authentication failed: %s", e.getMessage());
+			return null;
+		}
+	}
+
+	public AuthResponse refreshAccessToken(String refreshToken) {
+
+		try {
+
+			Map<String, String> refreshRequest = new HashMap<>();
+			refreshRequest.put("client_id", props.getWorkosClientId());
+			refreshRequest.put("client_secret", props.getWorkosApiKey());
+			refreshRequest.put("grant_type", "refresh_token");
+			refreshRequest.put("refresh_token", refreshToken);
+
+			return workosClient.refreshToken(refreshRequest);
+
+		} catch (Exception e) {
+			Log.errorf("Refresh token failed: %s", e.getMessage());
+			return null;
+		}
+	}
+
+	public String buildLogoutUrl(String sessionId) {
+
+		try {
+
+			return workos.userManagement.getLogoutUrl(sessionId);
+
+		} catch (Exception e) {
+
+			Log.errorf("Failed to build logout URL: %s", e.getMessage());
+
+			String returnToUrl = sysProps.getWebSuccessRedirect();
+
+			return String.format("https://api.workos.com/user_management/sessions/%s/logout?client_id=%s&return_to=%s",
+					sessionId, props.getWorkosClientId(), returnToUrl);
+		}
+	}
+
+	public GenericResponse buildErrorResponse(String message) {
+
+		GenericResponse response = new GenericResponse();
+		response.setStatus(AuthConstants.NOT_OK);
+		response.setMessage(message);
+
+		return response;
+	}
+
+	public GenericResponse buildSuccessResponse(String message) {
+
+		GenericResponse response = new GenericResponse();
+		response.setStatus(AuthConstants.OK);
+		response.setMessage(message);
+
+		return response;
+	}
 }

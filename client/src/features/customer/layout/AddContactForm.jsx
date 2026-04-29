@@ -26,8 +26,6 @@ const AddContactForm = () => {
 
         try {
             const customer = await createNewCustomer(payload);
-            console.log(profileFile)
-            console.log(customer)
             if (profileFile) {
                 await addProfilePic({
                     id: customer?.data?.result?.id,

@@ -24,4 +24,8 @@ public interface WorkosClient {
     @POST
     @Path("/authorize")
     AuthResponse authorizeWithCode(Map<String, String> body);
+    
+    @POST
+    @Path("/authenticate")
+    AuthResponse refreshToken(Map<String, String> body);
 }

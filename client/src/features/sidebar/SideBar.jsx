@@ -1,5 +1,6 @@
+// MODIFIED — Clients link added between Contacts and Dashboard
 import { useState } from "react";
-import { LayoutDashboard, Users, Settings, LogOut, LogOutIcon } from "lucide-react";
+import { LayoutDashboard, Users, Settings, LogOut, LogOutIcon, Trash2Icon, UserCheck } from "lucide-react";
 import SideBarLink from "./SideBarLink";
 import images from "../../assets";
 import { useLogoutUser } from "../../service/useAuthApi";
@@ -10,9 +11,10 @@ const SideBar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const sidebarLinks = [
-    { name: "Customers", path: "/", icon: Users },
+    { name: "Contacts", path: "/", icon: Users },
+    { name: "Clients", path: "/clients", icon: UserCheck },
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Settings", path: "/settings", icon: Settings },
+    { name: "Recyle Bin", path: "/recycle-bin", icon: Trash2Icon },
   ];
 
   return (
@@ -23,12 +25,18 @@ const SideBar = () => {
         </div>
 
         <nav className="flex flex-col items-center gap-5 flex-1">
-          {sidebarLinks.map((link) => (
+          {sidebarLinks.map(link => (
             <SideBarLink key={link.name} {...link} />
           ))}
         </nav>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2 pb-4">
+          <SideBarLink
+            name="Settings"
+            path="/settings"
+            icon={Settings}
+          />
+
           <SideBarLink
             name="Logout"
             icon={LogOut}

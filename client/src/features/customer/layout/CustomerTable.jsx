@@ -5,8 +5,9 @@ import CustomerToolbar from "../component/table/CustomerToolbar";
 import useCustomerTable from "../../../hooks/useCustomerTable";
 import { CustomerContext } from "../../../context/CustomerContext";
 import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
+import NoDataFound from "../../../ui/molecules/Empty-state/NoDataFound"
 
-const CustomerTable = ({ onEdit, onDelete }) => {
+const CustomerTable = ({ onEdit, onDelete, onAddClick }) => {
   const {
     customers,
     isLoading,
@@ -30,7 +31,7 @@ const CustomerTable = ({ onEdit, onDelete }) => {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-4">
-        <CustomerToolbar table={null} />
+        <CustomerToolbar table={null} length={customers?.length ?? 0} onAddClick={onAddClick}/>
         <div className="flex items-center justify-center py-20 text-gray-400">
           <Loader2 className="animate-spin mr-2" size={20} /> Loading customers...
         </div>
@@ -40,7 +41,7 @@ const CustomerTable = ({ onEdit, onDelete }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <CustomerToolbar table={table} />
+      <CustomerToolbar table={table} length={customers?.length ?? 0} onAddClick={onAddClick}/>
 
       <div
         ref={scrollContainerRef}
@@ -65,11 +66,10 @@ const CustomerTable = ({ onEdit, onDelete }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td
-                  colSpan={visibleColumns.length + 1}
-                  className="px-6 py-12 text-center text-sm text-gray-400"
-                >
-                  No customers found
+                <td colSpan={visibleColumns.length} className="py-20">
+                  <div className="flex items-center justify-center">
+                    <NoDataFound title="Contacts" />
+                  </div>
                 </td>
               </tr>
             ) : (
@@ -116,9 +116,9 @@ const CustomerTable = ({ onEdit, onDelete }) => {
           </tbody>
         </table>
         <div ref={sentinelRef} className="h-4 w-full" />
-          {isFetchingNextPage && (
-            <div className="flex items-center justify-center gap-2 py-4 text-sm text-gray-400">
-              <Loader2 className="animate-spin" size={16} /> Loading more...
+        {isFetchingNextPage && (
+          <div className="flex items-center justify-center gap-2 py-4 text-sm text-gray-400">
+            <Loader2 className="animate-spin" size={16} /> Loading more...
           </div>
         )}
       </div>

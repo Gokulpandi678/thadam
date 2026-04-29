@@ -31,7 +31,7 @@ const LOG_ICON_MAP = {
 };
 
 const MeetingLogItem = ({ log, isLast }) => {
-  console.log(log)
+  
   const config = LOG_ICON_MAP[log?.type] ?? LOG_ICON_MAP.NOTE;
 
   return (

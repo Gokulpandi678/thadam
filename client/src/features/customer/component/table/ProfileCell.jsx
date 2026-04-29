@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import Avatar from "../../../../ui/atoms/avatar/Avatar";
+import { getInitials } from "../../../../utils/customer.utils";
 
 const ProfileCell = ({ row }) => {
-  const { firstName, lastName, profilePicture } = row.original;
+  const { firstName, lastName } = row.original;
   const fullName = `${firstName ?? ""} ${lastName ?? ""}`.trim();
   const navigate = useNavigate();
 
@@ -9,19 +11,11 @@ const ProfileCell = ({ row }) => {
 
   return (
     <div className="flex items-center gap-3 cursor-pointer" onClick={handleNavigate}>
-      {profilePicture ? (
-        <img
-          src={profilePicture}
-          alt={fullName}
-          className="w-8 h-8 rounded-full object-cover"
-        />
-      ) : (
-        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-          <span className="text-sm font-medium text-gray-600">
-            {firstName?.[0]?.toUpperCase()}{lastName?.[0]?.toUpperCase()}
-          </span>
-        </div>
-      )}
+      <Avatar 
+        src={row.original.profilePicture}
+        initials={getInitials(row.original)}
+        size={37}
+      />
       <span className="font-medium text-blue-700 hover:text-blue-500">{fullName}</span>
     </div>
   );

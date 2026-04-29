@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Tag, Trash2, Link } from 'lucide-react';
+import { Mail, Phone, MapPin, Tag, Trash2, Link, Pencil } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { getInitials, getFullName, getLocation } from '../../../../utils/customer.utils';
 import Avatar from '../../../../ui/atoms/avatar/Avatar';
@@ -6,8 +6,9 @@ import RoleBadge from '../../../../ui/atoms/badge/RoleBadge';
 import InfoRow from '../../../../ui/atoms/row/InfoRow';
 import ConfirmationModal from '../../../../features/actions/ConfirmationModal';
 import { useEditProfilePic, useDeleteProfilePic } from '../../../../service/useCustomerApi';
+import { TextButton } from '../../../../ui/atoms/button/Button';
 
-const ProfileCard = ({ customer, profileCompletion, onEdit, onDelete }) => {
+const ProfileCard = ({ customer, profileCompletion, onEdit, onConvertAsClient, onDelete }) => {
 
     const { mutateAsync: editProfilePic } = useEditProfilePic();
     const { mutateAsync: deleteProfilePic, isPending: isDeletingPic } = useDeleteProfilePic();
@@ -34,7 +35,7 @@ const ProfileCard = ({ customer, profileCompletion, onEdit, onDelete }) => {
 
     return (
         <>
-            <div className="flex flex-col gap-2 items-center pt-7 px-5 pb-5 bg-white rounded-[20px] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(0,0,0,0.04)] relative overflow-hidden">
+            <div className="flex flex-col gap-2 items-center pt-7 px-5 pb-5 bg-white rounded-[20px] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(0,0,0,0.04)] relative overflow-y-scroll">
 
                 <div className="absolute top-0 left-0 right-0 h-18 bg-linear-to-br from-blue-600 to-blue-500" />
 
@@ -135,14 +136,24 @@ const ProfileCard = ({ customer, profileCompletion, onEdit, onDelete }) => {
                 <div className="flex gap-2 w-full">
                     <button
                         onClick={onEdit}
-                        className="flex-1 py-2.25 rounded-[10px] border border-[#e4e8f0] bg-white text-[13px] font-medium text-slate-900 cursor-pointer transition-all duration-150 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50"
+                        aria-label="Edit contact"
+                        className="w-9.5 flex-1 h-9.5 rounded-[10px] border border-blue-100 bg-blue-50 flex items-center justify-center cursor-pointer text-blue-500 transition-all duration-150 hover:bg-blue-500 hover:text-white shrink-0"
                     >
-                        Edit
+                        <Pencil size={15} />
                     </button>
+                    {
+                        customer?.role == "client" && (
+                            <TextButton
+                                onClick={onConvertAsClient}
+                            >
+                            Convert as Client
+                        </TextButton>
+                        )
+                    }
                     <button
                         onClick={onDelete}
                         aria-label="Delete contact"
-                        className="w-9.5 h-9.5 rounded-[10px] border border-red-100 bg-red-50 flex items-center justify-center cursor-pointer text-red-500 transition-all duration-150 hover:bg-red-500 hover:text-white shrink-0"
+                        className="w-9.5 h-9.5 flex-1 rounded-[10px] border border-red-100 bg-red-50 flex items-center justify-center cursor-pointer text-red-500 transition-all duration-150 hover:bg-red-500 hover:text-white shrink-0"
                     >
                         <Trash2 size={15} />
                     </button>

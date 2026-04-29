@@ -1,0 +1,65 @@
+import { useContext, useState } from "react";
+import { CustomerContext } from "../../../../context/CustomerContext";
+import { useAddProfilePic } from "../../../../service/useCustomerApi";
+import { useContactDrawerForm } from "../../../../hooks/useContactDrawerForm";
+import ContactDrawer from "./ContactDrawer";
+import contactDrawerTabs from "./contactDrawerConfig";
+
+
+const AddContactDrawer = ({ isOpen, onClose }) => {
+    const { createNewCustomer } = useContext(CustomerContext);
+    const { mutateAsync: addProfilePic } = useAddProfilePic();
+
+    const [profileFile, setProfileFile] = useState(null);
+    const [isPending, setIsPending] = useState(false);
+
+    const { form, errors, onChange, validate, serialise, getMeetingLogPayload } =
+        useContactDrawerForm(null, isOpen);
+
+    const handleSubmit = async () => {
+        if (!validate()) return;
+
+        const logsPayload = getMeetingLogPayload();
+        if (logsPayload === false) return;
+
+        setIsPending(true);
+        try {
+            const payload = {
+                ...serialise(),
+                ...(logsPayload ? { logs: logsPayload } : {}),
+            };
+
+            const customer = await createNewCustomer(payload);
+
+            if (profileFile) {
+                await addProfilePic({
+                    id: customer?.data?.result?.id,
+                    file: profileFile,
+                });
+            }
+
+            onClose();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
+
+    return (
+        <ContactDrawer
+            isOpen={isOpen}
+            onClose={onClose}
+            mode="add"
+            form={form}
+            errors={errors}
+            onChange={onChange}
+            onSubmit={handleSubmit}
+            isPending={isPending}
+            tabs={contactDrawerTabs}
+            submitLabel="Save contact"
+        />
+    );
+};
+
+export default AddContactDrawer;
