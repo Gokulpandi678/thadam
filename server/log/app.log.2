@@ -1,0 +1,187 @@
+2026-04-21 19:18:31,976 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [io.qua.config] (Quarkus Main Thread) Unrecognized configuration key "quarkus.log.file.json" was provided; it will be ignored; verify that the dependency extension for this configuration is set or that you did not make a typo
+2026-04-21 19:18:31,985 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [io.qua.config] (Quarkus Main Thread) The "quarkus.log.file.enable" config property is deprecated and should not be used anymore.
+2026-04-21 19:18:37,011 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [org.hib.orm.jdb.error] (JPA Startup Thread) HHH000247: ErrorCode: 0, SQLState: null
+2026-04-21 19:18:37,038 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [org.hib.orm.jdb.error] (JPA Startup Thread) Acquisition timeout while waiting for new connection
+2026-04-21 19:18:37,039 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [org.hib.orm.jdbc] (JPA Startup Thread) HHH100046: Could not obtain connection to query JDBC database metadata: org.hibernate.exception.GenericJDBCException: Unable to obtain isolated JDBC connection [Acquisition timeout while waiting for new connection] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:39)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.convert(JtaIsolationDelegate.java:228)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doTheWork(JtaIsolationDelegate.java:196)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.lambda$delegateWork$0(JtaIsolationDelegate.java:75)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doInSuspendedTransaction(JtaIsolationDelegate.java:111)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.delegateWork(JtaIsolationDelegate.java:72)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:366)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironment(JdbcEnvironmentInitiator.java:143)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:120)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:80)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:133)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:260)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:235)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
+	at org.hibernate.service.ServiceRegistry.requireService(ServiceRegistry.java:66)
+	at org.hibernate.engine.jdbc.internal.JdbcServicesImpl.configure(JdbcServicesImpl.java:50)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:139)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:244)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
+	at org.hibernate.service.ServiceRegistry.requireService(ServiceRegistry.java:66)
+	at org.hibernate.boot.internal.SessionFactoryOptionsBuilder.<init>(SessionFactoryOptionsBuilder.java:273)
+	at io.quarkus.hibernate.orm.runtime.recording.PrevalidatedQuarkusMetadata.buildSessionFactoryOptionsBuilder(PrevalidatedQuarkusMetadata.java:70)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:94)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:90)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:90)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:178)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.sql.SQLException: Acquisition timeout while waiting for new connection
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:428)
+	at io.agroal.pool.ConnectionPool.internalGetConnection(ConnectionPool.java:321)
+	at io.agroal.pool.ConnectionPool.getConnection(ConnectionPool.java:294)
+	at io.agroal.pool.DataSource.getConnection(DataSource.java:86)
+	at io.quarkus.hibernate.orm.runtime.customized.QuarkusConnectionProvider.getConnection(QuarkusConnectionProvider.java:27)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:508)
+	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doTheWork(JtaIsolationDelegate.java:193)
+	... 25 more
+Caused by: java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:390)
+	... 31 more
+
+2026-04-21 19:18:42,097 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [org.hib.orm.jdb.error] (JPA Startup Thread) HHH000247: ErrorCode: 0, SQLState: null
+2026-04-21 19:18:42,099 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] WARN  [org.hib.orm.jdb.error] (JPA Startup Thread) Acquisition timeout while waiting for new connection
+2026-04-21 19:18:42,112 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] ERROR [io.qua.run.Application] (Quarkus Main Thread) Failed to start application: java.lang.RuntimeException: Failed to start quarkus
+	at io.quarkus.runner.ApplicationImpl.doStart(Unknown Source)
+	at io.quarkus.runtime.Application.start(Application.java:112)
+	at io.quarkus.runtime.ApplicationLifecycleManager.run(ApplicationLifecycleManager.java:127)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:79)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:50)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:143)
+	at io.quarkus.runner.GeneratedMain.main(Unknown Source)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.quarkus.runner.bootstrap.StartupActionImpl$1.run(StartupActionImpl.java:156)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: <default>] Unable to build Hibernate SessionFactory
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.persistenceException(FastBootEntityManagerFactoryBuilder.java:132)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:99)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:90)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:90)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:178)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:65)
+	... 1 more
+Caused by: org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution [Acquisition timeout while waiting for new connection] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:39)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:74)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:63)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:61)
+	at org.hibernate.tool.schema.extract.spi.ExtractionContext.getQueryResults(ExtractionContext.java:41)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:36)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:73)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:63)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:174)
+	at org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:66)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:278)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:97)
+	... 5 more
+Caused by: java.sql.SQLException: Acquisition timeout while waiting for new connection
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:428)
+	at io.agroal.pool.ConnectionPool.internalGetConnection(ConnectionPool.java:321)
+	at io.agroal.pool.ConnectionPool.getConnection(ConnectionPool.java:294)
+	at io.agroal.pool.DataSource.getConnection(DataSource.java:86)
+	at io.quarkus.hibernate.orm.runtime.customized.QuarkusConnectionProvider.getConnection(QuarkusConnectionProvider.java:27)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:508)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:70)
+	... 21 more
+Caused by: java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:390)
+	... 27 more
+
+2026-04-21 19:18:42,111 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] ERROR [io.qua.dep.dev.IsolatedDevModeMain] (vert.x-worker-thread-2) Failed to start quarkus: io.quarkus.dev.appstate.ApplicationStartException: java.lang.RuntimeException: Failed to start quarkus
+	at io.quarkus.dev.appstate.ApplicationStateNotification.waitForApplicationStart(ApplicationStateNotification.java:63)
+	at io.quarkus.runner.bootstrap.StartupActionImpl.runMainClass(StartupActionImpl.java:182)
+	at io.quarkus.deployment.dev.IsolatedDevModeMain.restartApp(IsolatedDevModeMain.java:207)
+	at io.quarkus.deployment.dev.IsolatedDevModeMain.restartCallback(IsolatedDevModeMain.java:188)
+	at io.quarkus.deployment.dev.RuntimeUpdatesProcessor.doScan(RuntimeUpdatesProcessor.java:565)
+	at io.quarkus.deployment.dev.RuntimeUpdatesProcessor.doScan(RuntimeUpdatesProcessor.java:459)
+	at io.quarkus.vertx.http.runtime.devmode.VertxHttpHotReplacementSetup$6.call(VertxHttpHotReplacementSetup.java:169)
+	at io.quarkus.vertx.http.runtime.devmode.VertxHttpHotReplacementSetup$6.call(VertxHttpHotReplacementSetup.java:155)
+	at io.vertx.core.impl.ContextImpl.lambda$executeBlocking$4(ContextImpl.java:192)
+	at io.vertx.core.impl.ContextInternal.dispatch(ContextInternal.java:270)
+	at io.vertx.core.impl.ContextImpl$1.execute(ContextImpl.java:221)
+	at io.vertx.core.impl.WorkerTask.run(WorkerTask.java:56)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at org.jboss.threads.DelegatingRunnable.run(DelegatingRunnable.java:11)
+	at org.jboss.threads.ThreadLocalResettingRunnable.run(ThreadLocalResettingRunnable.java:11)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.RuntimeException: Failed to start quarkus
+	at io.quarkus.runner.ApplicationImpl.doStart(Unknown Source)
+	at io.quarkus.runtime.Application.start(Application.java:112)
+	at io.quarkus.runtime.ApplicationLifecycleManager.run(ApplicationLifecycleManager.java:127)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:79)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:50)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:143)
+	at io.quarkus.runner.GeneratedMain.main(Unknown Source)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.quarkus.runner.bootstrap.StartupActionImpl$1.run(StartupActionImpl.java:156)
+	... 1 more
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: <default>] Unable to build Hibernate SessionFactory
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.persistenceException(FastBootEntityManagerFactoryBuilder.java:132)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:99)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:90)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:90)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:178)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:65)
+	... 1 more
+Caused by: org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution [Acquisition timeout while waiting for new connection] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:39)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:74)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:63)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:61)
+	at org.hibernate.tool.schema.extract.spi.ExtractionContext.getQueryResults(ExtractionContext.java:41)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:36)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:73)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:63)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:174)
+	at org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:66)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:278)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:97)
+	... 5 more
+Caused by: java.sql.SQLException: Acquisition timeout while waiting for new connection
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:428)
+	at io.agroal.pool.ConnectionPool.internalGetConnection(ConnectionPool.java:321)
+	at io.agroal.pool.ConnectionPool.getConnection(ConnectionPool.java:294)
+	at io.agroal.pool.DataSource.getConnection(DataSource.java:86)
+	at io.quarkus.hibernate.orm.runtime.customized.QuarkusConnectionProvider.getConnection(QuarkusConnectionProvider.java:27)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:508)
+	at org.hibernate.resource.transaction.backend.jta.internal.DdlTransactionIsolatorJtaImpl.getIsolatedConnection(DdlTransactionIsolatorJtaImpl.java:70)
+	... 21 more
+Caused by: java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at io.agroal.pool.ConnectionPool.handlerFromSharedCache(ConnectionPool.java:390)
+	... 27 more
+
+2026-04-21 19:18:49,120 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] INFO  [io.qua.dep.dev.RuntimeUpdatesProcessor] (vert.x-worker-thread-2) Live reload total time: 24.147s 
+2026-04-21 19:18:49,122 gokulpandi C:\Users\gokul\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.8.v20250724-1412\jre\bin\javaw.exe[20360] INFO  [io.qua.dep.dev.RuntimeUpdatesProcessor] (vert.x-worker-thread-2) Live reload took more than 4 seconds, you may want to enable instrumentation based reload (quarkus.live-reload.instrumentation=true). This allows small changes to take effect without restarting Quarkus.
