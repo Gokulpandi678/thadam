@@ -3,7 +3,6 @@ package controller;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import context.RequestContext;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -11,7 +10,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import response.GenericResponse;
-import service.CustomerService;
 import service.DashboardService;
 
 @Path("/api/v1/dashboard")

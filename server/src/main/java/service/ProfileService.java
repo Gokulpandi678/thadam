@@ -1,29 +1,26 @@
 package service;
 
+import org.jboss.resteasy.reactive.RestResponse;
+
 import entity.UserEntity;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import mapper.ProfileMapper;
 import repositories.UserRepository;
 import request.UpdateProfileRequest;
 import response.GenericResponse;
 import response.PrepareResponse;
-import org.jboss.resteasy.reactive.RestResponse;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class ProfileService {
 
-    @Inject
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Inject
-    PrepareResponse prepareResponse;
+    private final PrepareResponse prepareResponse;
 
-    /**
-     * Retrieves the profile of the authenticated user by their userId.
-     */
     public RestResponse<GenericResponse> getProfile(String userId) {
         try {
             UserEntity user = userRepository.findByUserId(userId).orElse(null);
@@ -37,10 +34,6 @@ public class ProfileService {
         }
     }
 
-    /**
-     * Updates the profile of the authenticated user.
-     * Only non-null fields in the request are applied.
-     */
     @Transactional
     public RestResponse<GenericResponse> updateProfile(String userId, UpdateProfileRequest request) {
         try {

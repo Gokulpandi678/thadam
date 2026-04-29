@@ -5,14 +5,14 @@ import {
 } from "@tanstack/react-table";
 
 import { useMemo, useState } from "react";
-import getColumns from "../features/customer/component/table/columns";
+import getColumns from "../features/customer/components/table/customerColumns";
 
 const useCustomerTable = (customers) => {
   const data = useMemo(() => customers ?? [], [customers]);
   const [sorting, setSorting] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
 
-  const columns = useMemo(() => getColumns(),[]);
+  const columns = useMemo(() => getColumns(), []);
 
   const table = useReactTable({
     data,

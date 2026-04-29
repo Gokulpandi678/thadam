@@ -1,76 +1,72 @@
 import { useContext, useState } from "react";
-import Header from "../ui/molecules/header/Header";
-import { CustomerTable } from "../features/customer/layout";
-import EditCustomerSidebar from "../features/customer/layout/EditCustomerSidebar";
-import { CustomerContext } from "../context/CustomerContext";
-import ConfirmationModal from "../features/actions/ConfirmationModal";
 import { TriangleAlert } from "lucide-react";
+import Header from "../ui/molecules/header/Header";
+import { CustomerTable, EditCustomerSidebar } from "../features/customer/containers";
+import { AddContactDrawer } from "../features/customer/components/form";
+import { CustomerContext } from "../context/CustomerContext";
+import { ConfirmationModal } from "../shared/components";
 import { getFullName } from "../utils/customer.utils";
-import AddContactDrawer from "../features/customer/component/form/AddContactDrawer";
+import { useGetCustomerById } from "../service/useCustomerApi";
 
 const CustomerPage = () => {
-    const [addOpen, setAddOpen] = useState(false);  
-    const { deleteCustomer, isDeleting } = useContext(CustomerContext);
+  const [addOpen, setAddOpen] = useState(false);
+  const { deleteCustomer, isDeleting } = useContext(CustomerContext);
 
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const [customerToDelete, setCustomerToDelete] = useState(false);
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState(null);
 
-    const handleEdit = (customer) => {
-        setSelectedCustomer(customer);
-        setSidebarOpen(true);
-    };
+  const { data, isLoading: isLoadingDetail } = useGetCustomerById(selectedCustomerId);
+  const customerDetail = data?.data?.result;
 
-    const handleClose = () => {
-        setSidebarOpen(false);
-        setSelectedCustomer(null);
-    };
+  const handleEdit = (customer) => {
+    setSelectedCustomerId(customer?.id);
+    setSidebarOpen(true);
+  };
 
-    const handleDeleteRequest = (customer) => setCustomerToDelete(customer);
+  const handleClose = () => {
+    setSidebarOpen(false);
+    setSelectedCustomerId(null);
+  };
 
-    const handleDeleteConfirm = () => {
-        deleteCustomer(customerToDelete?.id, {
-            onSuccess: () => setCustomerToDelete(null),
-        });
-        setCustomerToDelete(false)
-    };
+  const handleDeleteConfirm = () => {
+    deleteCustomer(customerToDelete?.id, {
+      onSuccess: () => setCustomerToDelete(null),
+    });
+  };
 
-    return (
-        <div>
-            <AddContactDrawer
-                isOpen={addOpen}
-                onClose={() => setAddOpen(false)}
-            />
-            <Header
-                title="Contacts"
-                description="Manage your contacts. Log meetings."
-            />
+  return (
+    <div>
+      <AddContactDrawer isOpen={addOpen} onClose={() => setAddOpen(false)} />
 
-            <CustomerTable
-                onEdit={handleEdit}
-                onDelete={handleDeleteRequest}
-                onAddClick={() => setAddOpen(true)}
-            />
+      <Header title="Contacts" description="Manage your contacts. Log meetings." />
 
-            <EditCustomerSidebar
-                isOpen={isSidebarOpen}
-                onClose={handleClose}
-                customer={selectedCustomer}
-            />
+      <CustomerTable
+        onEdit={handleEdit}
+        onDelete={setCustomerToDelete}
+        onAddClick={() => setAddOpen(true)}
+      />
 
-            <ConfirmationModal
-                isOpen={customerToDelete}
-                title="Delete customer"
-                message={`"${getFullName(customerToDelete)}" will be moved to the temporary delete bin and permanently deleted after 30 days.`}
-                confirmLabel="Delete"
-                onConfirm={handleDeleteConfirm}
-                onCancel={() => setCustomerToDelete(null)}
-                isLoading={isDeleting}
-                variant="danger"
-                icon={<TriangleAlert />}
-            />
-        </div>
-    );
+      <EditCustomerSidebar
+        isOpen={isSidebarOpen}
+        onClose={handleClose}
+        customer={customerDetail}
+        // isLoading={isLoadingDetail}
+      />
+
+      <ConfirmationModal
+        isOpen={!!customerToDelete}
+        title="Delete contact"
+        message={`"${getFullName(customerToDelete)}" will be moved to the temporary delete bin and permanently deleted after 30 days.`}
+        confirmLabel="Delete"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setCustomerToDelete(null)}
+        isLoading={isDeleting}
+        variant="danger"
+        icon={<TriangleAlert />}
+      />
+    </div>
+  );
 };
 
 export default CustomerPage;

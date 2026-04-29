@@ -1,10 +1,12 @@
 package service;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.io.File;
 import java.util.Map;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class CloudinaryService {

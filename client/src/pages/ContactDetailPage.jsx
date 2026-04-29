@@ -1,24 +1,18 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
-import Header from '../ui/molecules/header/Header';
-import { useDeleteCustomer, useGetCustomerById } from '../service/useCustomerApi';
-import ContactDetails from '../features/customer/layout/ContactDetails';
+import { useParams, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import Header from "../ui/molecules/header/Header";
+import { useGetCustomerById } from "../service/useCustomerApi";
+import { ContactDetails } from "../features/customer/containers";
 
 const ContactDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useGetCustomerById(id ?? '');
-
+  const { data, isLoading, error } = useGetCustomerById(id ?? "");
   const customer = data?.data?.result ?? null;
 
-  const { mutate: deleteCustomer, isPending: isDeleting } = useDeleteCustomer();
-
-  const handleDeleteConfirm = (customerData) => {
-    deleteCustomer(
-      { id: customerData.id },
-      { onSuccess: () => navigate('/') }
-    );
+  const handleDeleteSuccess = () => {
+    navigate("/");
   };
 
   return (
@@ -51,10 +45,7 @@ const ContactDetailPage = () => {
       )}
 
       {!isLoading && !error && customer && (
-        <ContactDetails
-          customer={customer}
-          onDeleteSuccess={handleDeleteConfirm}
-        />
+        <ContactDetails customer={customer} onDeleteSuccess={handleDeleteSuccess} />
       )}
     </div>
   );

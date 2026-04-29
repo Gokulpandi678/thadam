@@ -21,6 +21,7 @@ public class CustomerLogResponse {
     private String title;
 
     private String type;
+    private String duration;
 
     private String description;
 

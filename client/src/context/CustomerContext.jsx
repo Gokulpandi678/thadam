@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useMemo } from "react";
 import {
     useGetCustomers,
@@ -47,8 +48,10 @@ export const CustomerContextProvider = ({ children }) => {
     const deleteCustomerMutation = useDeleteCustomer();
 
     const createNewCustomer = (params) => createCustomerMutation.mutateAsync(params);
-    const updateCustomer = (id, params) => updateCustomerMutation.mutate({ id, params });
-    const deleteCustomer = (id, params) => deleteCustomerMutation.mutate({ id, params });
+    const updateCustomer = (id, params, callbacks) =>
+        updateCustomerMutation.mutateAsync({ id, params }, callbacks);
+    const deleteCustomer = (id, callbacks) =>
+        deleteCustomerMutation.mutate({ id }, callbacks);
 
     const values = {
         customers,
@@ -61,6 +64,7 @@ export const CustomerContextProvider = ({ children }) => {
         createNewCustomer,
         updateCustomer,
         deleteCustomer,
+        isDeleting: deleteCustomerMutation.isPending,
 
         search,
         setSearch,

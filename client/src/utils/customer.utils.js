@@ -10,6 +10,9 @@ export const getFullName = (customer) =>
 export const getLocation = (customer) =>
   [customer?.addressCity, customer?.addressCountry].filter(Boolean).join(', ');
 
+export const isClientContact = (customer) =>
+  customer?.role === "Client" || Boolean(customer?.clientType || customer?.client?.clientType);
+
 export const formatDate = (isoDate) => {
   if (!isoDate) return '—';
   return new Date(isoDate).toLocaleDateString('en-IN', {

@@ -1,10 +1,13 @@
 package controller;
 
-import context.RequestContext;
 import org.jboss.resteasy.reactive.RestResponse;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import context.RequestContext;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import request.UpdateProfileRequest;

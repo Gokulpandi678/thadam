@@ -34,6 +34,12 @@ export const customerApi = {
     addLog: (customerId, params) =>
         apiClient.post(`/customers/${customerId}/addLogs`, params),
 
+    editLog: (customerId, logId, params) =>
+        apiClient.put(`/customers/${customerId}/editLog/${logId}`, params),
+
+    deleteLog: (customerId, logId) =>
+        apiClient.delete(`/customers/${customerId}/deleteLog/${logId}`),
+
     addProfilePic: (id, file) => {
         const formData = new FormData();
         formData.append("file", file);

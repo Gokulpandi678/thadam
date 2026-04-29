@@ -1,13 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
-export const useDashboardViewModel = (raw) => {
-    console.log(raw)
-  return useMemo(() => {
+export const useDashboardViewModel = (raw) =>
+  useMemo(() => {
     if (!raw) return null;
 
-    const validRoles = (raw.contactsByRole || []).filter((r) => r.type);
-    const validCities = (raw.contactsByCity || []).filter((c) => c.type);
-    const validStates = (raw.contactsByState || []).filter((s) => s.type);
+    const validRoles = (raw.contactsByRole || []).filter((item) => item.type);
+    const validCities = (raw.contactsByCity || []).filter((item) => item.type);
+    const validStates = (raw.contactsByState || []).filter((item) => item.type);
 
     return {
       stats: {
@@ -23,4 +22,3 @@ export const useDashboardViewModel = (raw) => {
       mostMetContacts: (raw.mostMetContacts || []).slice(0, 5),
     };
   }, [raw]);
-};

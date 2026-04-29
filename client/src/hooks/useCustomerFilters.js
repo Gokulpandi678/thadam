@@ -12,7 +12,6 @@ const useCustomerFilters = () => {
     const [filters, setFilters] = useState(INITIAL_FILTERS);
 
     const debouncedSearch = useDebounce(search, 500);
-    const debouncedFilters = useDebounce(filters, 500);
 
     const toggleFilter = useCallback((key, value) => {
         setFilters(prev => {
@@ -39,7 +38,7 @@ const useCustomerFilters = () => {
     const queryParams = {
         ...(debouncedSearch ? { search: debouncedSearch } : {}),
         ...Object.fromEntries(
-            Object.entries(debouncedFilters).filter(([, arr]) => arr.length > 0)
+            Object.entries(filters).filter(([, arr]) => arr.length > 0)
         ),
     };
 

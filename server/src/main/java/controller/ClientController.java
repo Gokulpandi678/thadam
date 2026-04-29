@@ -32,10 +32,6 @@ public class ClientController {
     private final ClientService clientService;
     private final RequestContext requestContext;
 
-    /**
-     * GET /api/v1/clients/getAllClients?search=&clientType=&engagementType=&page=0
-     * Mirrors: GET /customers/getAllCustomers
-     */
     @GET
     @Path("/getAllClients")
     public RestResponse<GenericResponse> getClients(
@@ -48,30 +44,18 @@ public class ClientController {
                 requestContext.getUserId(), search, clientTypes, engagementTypes, page);
     }
 
-    /**
-     * GET /api/v1/clients/filterOptions
-     * Mirrors: GET /customers/filterOptions
-     */
     @GET
     @Path("/filterOptions")
     public RestResponse<GenericResponse> getClientFilterOptions() {
         return clientService.getClientFilterOptions(requestContext.getUserId());
     }
 
-    /**
-     * GET /api/v1/clients/{customerId}
-     * Full detail — client + customer + logs in one call.
-     * Mirrors: GET /customers/{id}
-     */
     @GET
     @Path("/{customerId}")
     public RestResponse<GenericResponse> getClient(@PathParam("customerId") UUID customerId) {
         return clientService.getClient(customerId, requestContext.getUserId());
     }
 
-    /**
-     * POST /api/v1/clients/{customerId}/convert
-     */
     @POST
     @Path("/{customerId}/convert")
     public RestResponse<GenericResponse> convertAsClient(
@@ -80,9 +64,6 @@ public class ClientController {
         return clientService.convertAsClient(customerId, request, requestContext.getUserId());
     }
 
-    /**
-     * PUT /api/v1/clients/{customerId}
-     */
     @PUT
     @Path("/{customerId}")
     public RestResponse<GenericResponse> updateClient(
@@ -91,9 +72,6 @@ public class ClientController {
         return clientService.updateClient(customerId, request, requestContext.getUserId());
     }
 
-    /**
-     * DELETE /api/v1/clients/{customerId}/revert
-     */
     @DELETE
     @Path("/{customerId}/revert")
     public RestResponse<GenericResponse> revertClient(@PathParam("customerId") UUID customerId) {

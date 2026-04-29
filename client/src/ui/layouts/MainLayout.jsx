@@ -1,9 +1,8 @@
 import { useLocation } from "react-router-dom";
-import SideBar from "../../features/sidebar/SideBar";
+import { SideBar } from "../navigation";
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
-  
   const isLoginPage = location.pathname === "/login";
 
   return (
