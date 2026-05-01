@@ -11,9 +11,8 @@ const TrendBadge = ({ trend, percent }) => {
   const isUp = trend === "up";
   return (
     <span
-      className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${
-        isUp ? "text-green-600 bg-green-100" : "text-red-500 bg-red-100"
-      }`}
+      className={`inline-flex w-max items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${isUp ? "text-green-600 bg-green-100" : "text-red-500 bg-red-100"
+        }`}
     >
       {isUp ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
       {isUp ? "+" : "-"}
@@ -54,22 +53,32 @@ const STAT_DEFINITIONS = [
 ];
 
 const StatCard = ({ stats }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
     {STAT_DEFINITIONS.map(({ key, title, icon, iconBg, description }) => {
-      const { value = 0, percent = null, trend = "same", } = stats[key] ?? {};
+      const { value = 0, percent = null, trend = "same" } = stats[key] ?? {};
       return (
         <div
           key={key}
-          className="flex items-center gap-4 bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition"
-        >
-          <div className={`p-3 rounded-lg ${iconBg}`}>{icon}</div>
-          <div className="flex flex-col flex-1">
-            <p className="text-sm text-gray-500">{title}</p>
-            <h2 className="text-2xl font-bold">{value.toLocaleString()}</h2>
+          className="
+            bg-white shadow-md rounded-xl hover:shadow-lg transition
+            flex flex-col gap-2 p-3
+            lg:flex-row lg:items-center lg:gap-4 lg:p-5
+          ">
+          {/* Icon + Title + Value — same row on mobile */}
+          <div className="flex items-center gap-2 lg:contents">
+            <div className={`shrink-0 p-2 lg:p-3 rounded-lg ${iconBg}`}>
+              {icon}
+            </div>
+            <div className="flex flex-col flex-1 min-w-0">
+              <p className="text-xs lg:text-sm text-gray-500 leading-tight">{title}</p>
+              <h2 className="text-lg lg:text-2xl font-bold">{value.toLocaleString()}</h2>
+            </div>
           </div>
-          <div className="flex flex-col items-center gap-1">
+
+          {/* Trend */}
+          <div className="flex flex-col gap-0.5 lg:items-center">
             <TrendBadge trend={trend} percent={percent} />
-            <p className="text-xs text-gray-500">{description}</p>
+            <p className="text-[10px] lg:text-xs text-gray-500">{description}</p>
           </div>
         </div>
       );

@@ -7,7 +7,8 @@ const Dashboard = () => {
   const vm = data?.data?.result ?? null;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
+
       <Header
         title="Dashboard"
         description="Track the entire relationship journey with your contacts."
@@ -19,24 +20,37 @@ const Dashboard = () => {
 
       {!isLoading && !isError && vm && (
         <>
+          {/* Stats */}
           <StatCard stats={vm.stats} />
 
-          <div className="flex gap-5">
-            <div className="flex-1">
-              <DonutChart data={vm?.distributions?.byCity ?? []} name="Cities" />
-            </div>
-            <div className="flex-1">
-              <DonutChart data={vm?.distributions?.byRole ?? []} name="Roles" />
-            </div>
+          {/* Donut Charts */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+
+            <DonutChart
+              data={vm?.distributions?.byCity ?? []}
+              name="Cities"
+            />
+
+            <DonutChart
+              data={vm?.distributions?.byRole ?? []}
+              name="Roles"
+            />
+
           </div>
 
-          <div className="flex gap-5">
-            <div className="flex-1">
-              <MetricsCard data={vm?.recentContacts ?? []} name="Recent Contacts" />
-            </div>
-            <div className="flex-1">
-              <MetricsCard data={vm?.mostEngaged ?? []} name="Most Engaged By Meeting" />
-            </div>
+          {/* Metrics Cards */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+
+            <MetricsCard
+              data={vm?.recentContacts ?? []}
+              name="Recent Contacts"
+            />
+
+            <MetricsCard
+              data={vm?.mostEngaged ?? []}
+              name="Most Engaged By Meeting"
+            />
+
           </div>
         </>
       )}

@@ -20,7 +20,14 @@ const SLIDE_TEXT = {
   transition: { duration: 0.25, ease: "easeInOut" },
 };
 
-const Button = ({ variant = "primary", icon, children, onClick, transition = "default" }) => {
+const Button = ({
+  variant = "primary",
+  icon,
+  children,
+  onClick,
+  transition = "default",
+  className,
+}) => {
   const MotionButton = motion.button;
   const MotionSpan = motion.span;
   const classNames = theme.button[variant];
@@ -36,7 +43,7 @@ const Button = ({ variant = "primary", icon, children, onClick, transition = "de
       onClick={onClick}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className={clsx(classNames, BASIC_BUTTON_CLASS)}
+      className={clsx(classNames, BASIC_BUTTON_CLASS, className)}
     >
       <span className="flex items-center gap-1 overflow-hidden">
         {icon && (

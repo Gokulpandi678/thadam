@@ -7,9 +7,15 @@ const getInitials = (name = "") => {
 };
 
 const EmptyState = ({ name }) => (
+
   <div className="flex flex-col items-center justify-center flex-1 gap-2 py-6 text-center">
-    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
-      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gray-100 flex items-center justify-center">
+      <svg
+        className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -18,70 +24,105 @@ const EmptyState = ({ name }) => (
         />
       </svg>
     </div>
-    <p className="text-sm font-medium text-gray-500">No data yet</p>
+
+    ```
+    <p className="text-sm lg:text-base font-medium text-gray-500">No data yet</p>
+
     <p className="text-xs text-gray-400">
       {name === "Recent Contacts"
         ? "Contacts you interact with will appear here."
         : "Meeting engagement stats will show up here."}
     </p>
+    ```
+
   </div>
 );
 
 const MetricsCard = ({ data = [], name }) => {
   const navigate = useNavigate();
+
   const MIN_ROWS = 5;
   const isEmpty = data.length === 0;
   const hasGap = !isEmpty && data.length < MIN_ROWS;
 
-  return (
-    <div className="flex flex-col gap-5 bg-white rounded-xl shadow-xl p-6 flex-1 h-full">
-      <h2 className="text-xl font-semibold">{name}</h2>
+  return (<div className="flex flex-col gap-4 lg:gap-5 bg-white rounded-xl shadow-xl p-4 lg:p-6 h-full">
 
-      <div className="flex flex-col gap-3 flex-1">
-        {isEmpty ? (
-          <EmptyState name={name} />
-        ) : (
-          <>
-            {data.map((item, i) => (
-              <div className="flex justify-between items-center" key={i}>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold">
-                    {getInitials(item?.name ?? "")}
-                  </div>
-                  <div className="flex flex-col">
-                    <span
-                      className="text-blue-700 cursor-pointer hover:underline"
-                      onClick={() => navigate(`/customer/${item?.id}`)}
-                    >
-                      {item?.name ?? "Unknown User"}
-                    </span>
-                    {item?.company && item?.designation && (
-                      <span className="text-xs text-gray-500">
-                        {`${item.company} · ${item.designation}`}
-                      </span>
-                    )}
-                  </div>
+    {/* Title */}
+    <h2 className="text-lg lg:text-xl font-semibold">{name}</h2>
+
+    <div className="flex flex-col gap-2 lg:gap-3 flex-1">
+
+      {isEmpty ? (
+        <EmptyState name={name} />
+      ) : (
+        <>
+          {data.map((item, i) => (
+            <div className="flex justify-between items-center gap-2" key={i}>
+
+              {/* Left Section */}
+              <div className="flex items-center gap-3 min-w-0">
+
+                {/* Avatar */}
+                <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs lg:text-sm font-semibold shrink-0">
+                  {getInitials(item?.name ?? "")}
                 </div>
-                <span className="text-gray-500">
-                  {name === "Recent Contacts" ? item?.addedAgo : item?.meetCount}
-                </span>
-              </div>
-            ))}
 
-            {hasGap && (
-              <div className="flex flex-col items-center justify-center flex-1 gap-1 rounded-lg bg-gray-50 border border-dashed border-gray-200 mt-1 py-4 text-center">
-                <p className="text-xs text-gray-400 font-medium">More activity coming soon</p>
-                <p className="text-xs text-gray-300">
-                  {name === "Recent Contacts"
-                    ? "Add contacts to see them here."
-                    : "Schedule meetings to grow this list."}
-                </p>
+                {/* Name + Company */}
+                <div className="flex flex-col min-w-0">
+
+                  <span
+                    className="text-sm lg:text-base text-blue-700 cursor-pointer hover:underline truncate"
+                    onClick={() => navigate(`/customer/${item?.id}`)}
+                  >
+                    {item?.name ?? "Unknown User"}
+                  </span>
+
+                  {item?.company && item?.designation && (
+                    <span className="text-[11px] lg:text-xs text-gray-500 truncate max-w-[170px] lg:max-w-none">
+                      {`${item.company} · ${item.designation}`}
+                    </span>
+                  )}
+
+                </div>
               </div>
-            )}
-          </>
-        )}
-      </div>
+
+              {/* Right Section */}
+              <span
+                className={`text-gray-500 whitespace-nowrap ${name === "Recent Contacts"
+                  ? "text-[11px] lg:text-xs"
+                  : "text-sm lg:text-base"
+                  }`}
+              >
+                {name === "Recent Contacts"
+                  ? item?.addedAgo
+                  : item?.meetCount}
+              </span>
+
+            </div>
+          ))}
+
+          {/* Gap filler when rows < MIN_ROWS */}
+          {hasGap && (
+            <div className="flex flex-col items-center justify-center flex-1 gap-1 rounded-lg bg-gray-50 border border-dashed border-gray-200 mt-1 py-4 text-center">
+
+              <p className="text-xs text-gray-400 font-medium">
+                More activity coming soon
+              </p>
+
+              <p className="text-[11px] lg:text-xs text-gray-300">
+                {name === "Recent Contacts"
+                  ? "Add contacts to see them here."
+                  : "Schedule meetings to grow this list."}
+              </p>
+
+            </div>
+          )}
+        </>
+      )}
+
     </div>
+  </div>
+
   );
 };
 

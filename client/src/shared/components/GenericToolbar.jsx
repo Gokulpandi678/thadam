@@ -38,19 +38,28 @@ const GenericToolbar = ({
   const visibleCount = toggleableColumns.filter((column) => column.getIsVisible()).length;
 
   return (
-    <div className="mt-5 flex items-center justify-between gap-4">
-      <div className="flex items-center gap-2">
-        <InputBox
-          placeholder="Search by name, email, company..."
-          icon={<Search />}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          type="search"
-        />
+    <div className="mt-5">
+      <div className="flex items-center gap-2 rounded-3xl border border-white/70 bg-white/90 p-3 shadow-sm sm:p-4">
+        
+        {/* Search — flex-1 always, but capped on desktop */}
+        <div className="flex-1 md:max-w-xs lg:max-w-sm">
+          <InputBox
+            placeholder="Search by name, email, company..."
+            icon={<Search />}
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            type="search"
+          />
+        </div>
 
-        <div className="relative" ref={filterMenuRef}>
-          <IconButton icon={<Filter />} onClick={() => setShowFilterMenu((open) => !open)}>
-            Filters
+        {/* Filter button */}
+        <div className="relative shrink-0" ref={filterMenuRef}>
+          <IconButton
+            icon={<Filter />}
+            onClick={() => setShowFilterMenu((open) => !open)}
+            className="rounded-full px-4 py-2 text-sm shadow-sm"
+          >
+            <span className="hidden sm:inline">Filters</span>
             {activeFilterCount > 0 && (
               <span className="ml-1 rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
                 {activeFilterCount}
@@ -59,7 +68,7 @@ const GenericToolbar = ({
           </IconButton>
 
           {showFilterMenu && (
-            <div className="absolute left-0 z-20 mt-2 w-64 rounded-xl border border-gray-200 bg-white p-3 shadow-xl">
+            <div className="absolute right-0 z-20 mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200 bg-white p-3 shadow-xl">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
                   Filters
@@ -73,7 +82,6 @@ const GenericToolbar = ({
                   </button>
                 )}
               </div>
-
               <div className="space-y-3">
                 {filterFields.map(({ key, label }) => (
                   <div key={key}>
@@ -98,10 +106,15 @@ const GenericToolbar = ({
           )}
         </div>
 
+        {/* Columns button */}
         {table && (
-          <div className="relative" ref={columnMenuRef}>
-            <IconButton icon={<Columns3Cog />} onClick={() => setShowColumnMenu((open) => !open)}>
-              Columns
+          <div className="relative hidden shrink-0 md:block" ref={columnMenuRef}>
+            <IconButton
+              icon={<Columns3Cog />}
+              onClick={() => setShowColumnMenu((open) => !open)}
+              className="rounded-full px-4 py-2 text-sm shadow-sm"
+            >
+              <span className="hidden sm:inline">Columns</span>
               {visibleCount > 0 && (
                 <span className="ml-1 rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
                   {visibleCount}
@@ -110,19 +123,20 @@ const GenericToolbar = ({
             </IconButton>
 
             {showColumnMenu && (
-              <div className="absolute right-0 z-20 mt-2 w-56 rounded-xl border border-gray-200 bg-white p-3 shadow-xl">
+              <div className="absolute right-0 z-20 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-gray-200 bg-white p-3 shadow-xl">
                 <div className="mb-2 flex items-center justify-between">
                   <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
                     Toggle Columns ({visibleCount}/{toggleableColumns.length})
                   </span>
                   <button
-                    onClick={() => toggleableColumns.forEach((column) => column.toggleVisibility(true))}
+                    onClick={() =>
+                      toggleableColumns.forEach((column) => column.toggleVisibility(true))
+                    }
                     className="text-xs text-indigo-600 hover:underline"
                   >
                     Show all
                   </button>
                 </div>
-
                 <div className="max-h-72 space-y-1 overflow-y-auto">
                   {toggleableColumns.map((column) => (
                     <label
@@ -143,14 +157,26 @@ const GenericToolbar = ({
             )}
           </div>
         )}
+
+        {/* Count label — hide on mobile to save space */}
+        <span className="hidden shrink-0 text-sm text-gray-500 lg:inline">
+          {entityLabel}: {length}
+        </span>
+
+        {/* Add button — inline on desktop */}
+        {rightSlot && (
+          <div className="hidden shrink-0 md:block">
+            {rightSlot}
+          </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-5">
-        <span className="text-sm text-gray-500">
-          Showing {entityLabel}: {length}
-        </span>
-        {rightSlot}
-      </div>
+      {/* Add button — fixed bottom-right on mobile */}
+      {rightSlot && (
+        <div className="fixed bottom-24 right-4 z-30 md:hidden">
+          {rightSlot}
+        </div>
+      )}
     </div>
   );
 };

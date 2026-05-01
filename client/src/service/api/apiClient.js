@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export const backend_base_url = import.meta.env.VITE_ENV === "prod" ? import.meta.env.VITE_LIVE_BACKEND_BASE_URL : import.meta.env.VITE_LOCAL_BACKEND_BASE_URL
+
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
+  baseURL: backend_base_url,
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +12,7 @@ export const apiClient = axios.create({
 
 async function refreshToken() {
   return axios.post(
-    `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/refresh`,
+    `${backend_base_url}/auth/refresh`,
     {},
     { withCredentials: true }
   );

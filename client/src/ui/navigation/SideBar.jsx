@@ -18,25 +18,26 @@ const SideBar = () => {
 
   return (
     <>
-      <aside className="z-10 flex h-screen w-18 flex-col items-stretch border-gray-100 bg-white py-4 shadow-sm">
-        <div className="mb-8 ml-2.5 w-13">
+      <aside className="fixed inset-x-3 bottom-3 z-40 rounded-[28px] border border-white/70 bg-white/95 px-2 py-2 shadow-[0_20px_45px_rgba(15,23,42,0.16)] backdrop-blur md:sticky md:top-0 md:inset-auto md:flex md:h-screen md:w-22 md:flex-col md:rounded-none md:border-r md:border-white md:px-0 md:py-4 md:shadow-sm">
+        <div className="mb-8 ml-2.5 hidden w-13 md:block">
           <img src={images.logo} alt="Thadam CRM Logo" />
         </div>
 
-        <nav className="flex flex-1 flex-col items-center gap-5">
+        <nav className="flex items-center justify-around gap-1 md:flex-1 md:flex-col md:justify-start md:gap-5">
           {SIDEBAR_LINKS.map((link) => (
             <SideBarLink key={link.name} {...link} />
           ))}
-        </nav>
 
-        <div className="flex flex-col items-center gap-2 pb-4">
-          <SideBarLink name="Settings" path="/settings" icon={Settings} />
           <SideBarLink
             name="Logout"
             icon={LogOut}
             onClick={() => setShowLogoutModal(true)}
             disabled={isPending}
           />
+        </nav>
+
+        <div className="hidden flex-col items-center gap-2 pb-4 md:flex">
+          <SideBarLink name="Settings" path="/settings" icon={Settings} />
         </div>
       </aside>
 

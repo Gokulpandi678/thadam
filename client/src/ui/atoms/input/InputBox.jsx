@@ -7,13 +7,13 @@ const InputBox = ({ placeholder, onChange, value, icon, type = "text" }) => {
   return (
     <div
       className={clsx(
-        "flex items-center gap-1 border-2 border-gray-600 text-gray-600 w-max",
-        "rounded py-1 px-2"
+        "flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-slate-500 shadow-sm",
+        "focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100"
       )}
     >
       {icon && React.cloneElement(icon, { size: ICON_SIZE })}
       <input
-        className="border-none outline-none w-70"
+        className="w-full border-none bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400 sm:text-[15px]"
         type={type}
         onChange={onChange}
         value={value}

@@ -1,9 +1,10 @@
 import images from "../assets";
 import { LogIn } from "lucide-react";
+import { backend_base_url } from "../service/api/apiClient";
 
 const Login = () => {
   const handleClick = () => {
-    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`;
+    window.location.href = `${backend_base_url}/auth/login`;
   };
 
   return (

@@ -39,16 +39,18 @@ const ContactRecycleBin = () => {
           Unable to load deleted contacts. Please try again.
         </div>
       )}
-      {!isLoading && !error && <div className="mt-5 flex flex-col gap-2">
-        {customers.map((item) => (
-          <DeletedContactCard
-            key={item.id}
-            customer={item}
-            onDelete={handlePermanentDelete}
-            onRestore={handleRestore}
-          />
-        ))}
-      </div>}
+      {!isLoading && !error && (
+        <div className="mt-5 flex flex-col gap-3">
+          {customers.map((item) => (
+            <DeletedContactCard
+              key={item.id}
+              customer={item}
+              onDelete={handlePermanentDelete}
+              onRestore={handleRestore}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
