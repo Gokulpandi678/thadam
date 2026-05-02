@@ -85,6 +85,11 @@ apiClient.interceptors.response.use(
           }
         }
 
+        if (status >= 500 && status < 600) {
+          window.location.href = "/service-error";
+          return Promise.reject(error);
+        }
+
         isRefreshing = false;
         return Promise.reject(refreshError);
       }

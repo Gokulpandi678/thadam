@@ -31,7 +31,7 @@ const CustomerToolbar = ({ table, length, onAddClick }) => {
         <TextButton
           icon={<Plus />}
           onClick={onAddClick}
-          className="rounded-full px-5 py-3 text-sm shadow-[0_18px_35px_rgba(40,150,255,0.28)] sm:text-base"
+          className="rounded-full text-sm shadow-[0_18px_35px_rgba(40,150,255,0.28)] sm:text-base"
         >
           Add Contact
         </TextButton>

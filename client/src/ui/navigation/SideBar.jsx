@@ -5,7 +5,7 @@ import { ConfirmationModal } from "../../shared/components";
 import { useLogoutUser } from "../../service/useAuthApi";
 import SideBarLink from "./SideBarLink";
 
-const SIDEBAR_LINKS = [
+const NAV_LINKS = [
   { name: "Contacts", path: "/", icon: Users },
   { name: "Clients", path: "/clients", icon: UserCheck },
   { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -18,26 +18,52 @@ const SideBar = () => {
 
   return (
     <>
-      <aside className="fixed inset-x-3 bottom-3 z-40 rounded-[28px] border border-white/70 bg-white/95 px-2 py-2 shadow-[0_20px_45px_rgba(15,23,42,0.16)] backdrop-blur md:sticky md:top-0 md:inset-auto md:flex md:h-screen md:w-22 md:flex-col md:rounded-none md:border-r md:border-white md:px-0 md:py-4 md:shadow-sm">
-        <div className="mb-8 ml-2.5 hidden w-13 md:block">
+      {/* ── MOBILE: Logout floating top-right ── */}
+      <div className="fixed top-3 right-3 z-50 md:hidden">
+        <SideBarLink
+          name="Logout"
+          icon={LogOut}
+          onClick={() => setShowLogoutModal(true)}
+          disabled={isPending}
+          floating
+        />
+      </div>
+
+      {/* ── MOBILE: bottom bar (4 nav + Settings) ── */}
+      <aside className="fixed inset-x-3 bottom-3 z-40 rounded-[28px] border border-white/70
+          bg-white/95 px-2 py-2 shadow-[0_20px_45px_rgba(15,23,42,0.16)] backdrop-blur
+          md:hidden">
+        <nav className="flex items-center justify-around gap-2">
+          {NAV_LINKS.map((link) => (
+            <SideBarLink key={link.name} {...link} />
+          ))}
+          <SideBarLink name="Settings" path="/settings" icon={Settings} />
+        </nav>
+      </aside>
+
+      {/* ── DESKTOP: left sidebar ── */}
+      <aside className="hidden bg-white    md:sticky md:top-0 md:flex md:h-screen md:w-22 md:flex-col
+          md:border-r md:border-white md:py-4 md:shadow-sm">
+        <div className="mb-8 ml-2.5 w-13">
           <img src={images.logo} alt="Thadam CRM Logo" />
         </div>
 
-        <nav className="flex items-center justify-around gap-1 md:flex-1 md:flex-col md:justify-start md:gap-5">
-          {SIDEBAR_LINKS.map((link) => (
+        {/* Main nav links */}
+        <nav className="flex flex-1 flex-col items-center gap-5">
+          {NAV_LINKS.map((link) => (
             <SideBarLink key={link.name} {...link} />
           ))}
+        </nav>
 
+        {/* Settings + Logout pinned at bottom */}
+        <div className="flex flex-col items-center gap-2 pb-4">
+          <SideBarLink name="Settings" path="/settings" icon={Settings} />
           <SideBarLink
             name="Logout"
             icon={LogOut}
             onClick={() => setShowLogoutModal(true)}
             disabled={isPending}
           />
-        </nav>
-
-        <div className="hidden flex-col items-center gap-2 pb-4 md:flex">
-          <SideBarLink name="Settings" path="/settings" icon={Settings} />
         </div>
       </aside>
 
@@ -46,10 +72,7 @@ const SideBar = () => {
         title="Confirm logout"
         message="Are you sure you want to log out? Any unsaved changes will be lost."
         confirmLabel="Logout"
-        onConfirm={() => {
-          logout();
-          setShowLogoutModal(false);
-        }}
+        onConfirm={() => { logout(); setShowLogoutModal(false); }}
         onCancel={() => setShowLogoutModal(false)}
         isLoading={isPending}
         variant="danger"

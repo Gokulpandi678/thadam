@@ -1,24 +1,23 @@
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 
-const BASE_CLASS =
-  "group flex min-w-0 flex-1 flex-col items-center justify-center rounded-2xl px-2 py-2 text-[10px] transition-colors duration-150 sm:text-[11px] md:w-full md:flex-none md:px-1 md:py-1 md:text-xs";
-
-const SideBarLink = ({ name, path, icon: Icon, onClick, disabled }) => {
-  const NavIcon = Icon;
+const SideBarLink = ({ name, path, icon: Icon, onClick, disabled, floating }) => {
+  const base = clsx(
+    "group flex min-w-0 items-center justify-center rounded-2xl transition-colors duration-150 font-medium",
+    floating
+      ? "flex-row gap-1.5 rounded-full border border-red-100 bg-white/95 px-3 py-2 text-[10px] text-red-400 shadow-[0_4px_14px_rgba(15,23,42,0.12)] backdrop-blur hover:border-red-200 hover:text-red-500"
+      : "w-full flex-col px-1 py-1 text-xs"
+  );
 
   if (onClick) {
     return (
       <button
         onClick={onClick}
         disabled={disabled}
-        className={clsx(
-          BASE_CLASS,
-          "cursor-pointer text-gray-400 hover:text-red-500 disabled:opacity-50 md:w-full"
-        )}
+        className={clsx(base, !floating && "text-gray-400 hover:text-red-500 disabled:opacity-50")}
       >
-        <NavIcon size={18} />
-        <span className="truncate pt-1 font-medium">{name}</span>
+        <Icon size={floating ? 14 : 18} />
+        <span className={clsx("truncate", floating ? "" : "pt-0.5")}>{name}</span>
       </button>
     );
   }
@@ -28,15 +27,16 @@ const SideBarLink = ({ name, path, icon: Icon, onClick, disabled }) => {
       to={path}
       className={({ isActive }) =>
         clsx(
-          BASE_CLASS,
-          isActive
+          base,
+          !floating && (isActive
             ? "bg-blue-50 text-blue-500 shadow-sm"
             : "text-gray-400 hover:bg-slate-50 hover:text-blue-500"
+          )
         )
       }
     >
-      <NavIcon size={18} />
-      <span className="truncate pt-1 font-medium">{name}</span>
+      <Icon size={floating ? 14 : 18} />
+      <span className={clsx("truncate", !floating && "pt-0.5")}>{name}</span>
     </NavLink>
   );
 };
