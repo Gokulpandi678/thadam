@@ -49,6 +49,7 @@ export const useCreateCustomer = () => {
             toast.success("Contact created successfully", { id: context.toastId });
             queryClient.invalidateQueries({ queryKey: qk.allCustomers() });
             queryClient.invalidateQueries({ queryKey: qk.customerFilterOptions() });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
         },
         onError: (error, variables, context) => {
             toast.error("Failed to create customer", { id: context.toastId });
@@ -69,6 +70,7 @@ export const useUpdateCustomer = () => {
             queryClient.invalidateQueries({ queryKey: qk.allCustomers() });
             queryClient.invalidateQueries({ queryKey: qk.customerFilterOptions() });
             queryClient.invalidateQueries({ queryKey: qk.customer(variables.id) });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
         },
         onError: (error, variables, context) => {
             toast.error("Failed to update customer", { id: context.toastId });
@@ -88,6 +90,7 @@ export const useDeleteCustomer = () => {
             toast.success("Contact deleted successfully", { id: context.toastId });
             queryClient.invalidateQueries({ queryKey: qk.allCustomers() });
             queryClient.invalidateQueries({ queryKey: qk.customerFilterOptions() });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
         },
         onError: (error, variables, context) => {
             toast.error("Failed to delete customer", { id: context.toastId });
@@ -106,6 +109,7 @@ export const useAddCustomerLog = () => {
         onSuccess: (data, variables, context) => {
             toast.success("Meeting logged successfully", { id: context.toastId });
             queryClient.invalidateQueries({ queryKey: qk.customer(variables.customerId) });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
         },
         onError: (error, variables, context) => {
             toast.error("Failed to log meeting", { id: context.toastId });
@@ -124,6 +128,7 @@ export const useEditCustomerLog = () => {
         onSuccess: (data, variables, context) => {
             toast.success("Meeting log updated successfully", { id: context.toastId });
             queryClient.invalidateQueries({ queryKey: qk.customer(variables.customerId) });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
         },
         onError: (error, variables, context) => {
             toast.error("Failed to update meeting log", { id: context.toastId });
@@ -141,6 +146,7 @@ export const useDeleteCustomerLog = () => {
         },
         onSuccess: (data, variables, context) => {
             toast.success("Meeting log deleted successfully", { id: context.toastId });
+            queryClient.invalidateQueries({queryKey: qk.dashboard()});
             queryClient.invalidateQueries({ queryKey: qk.customer(variables.customerId) });
         },
         onError: (error, variables, context) => {
